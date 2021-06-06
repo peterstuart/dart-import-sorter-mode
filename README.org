@@ -2,3 +2,11 @@
 A minor mode for Dart which runs [[https://pub.dev/packages/import_sorter][import_sorter]] on save.
 ** Setup
 Install import_sorter as a dev dependency in your project.
+*** With [[https://github.com/quelpa/quelpa#installation][quelpa]] and [[https://github.com/jwiegley/use-package][use-package]]
+#+BEGIN_SRC elisp
+  (use-package dart-import-sorter-mode
+    :quelpa (dart-import-sorter-mode
+             :fetcher github
+             :repo "peterstuart/dart-import-sorter-mode")
+    :after dart-mode)
+#+END_SRC
