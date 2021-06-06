@@ -1,0 +1,4 @@
+* dart-import-sorter-mode.el
+A minor mode for Dart which runs [[https://pub.dev/packages/import_sorter][import_sorter]] on save.
+** Setup
+Install import_sorter as a dev dependency in your project.
