@@ -9,7 +9,25 @@
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "27.1") (dart-mode "1.0.5"))
 
-(defun dart-sort-imports ()
+;;; Commentary:
+
+;; Requires https://pub.dev/packages/import_sorter to be installed as
+;; a dev dependency in the Dart project.
+
+;;; Code:
+
+(define-minor-mode dart-import-sorter-mode
+  "Toggle Dart Import Sorter mode."
+  nil
+  :group 'dart-import-sorter
+
+  (if dart-import-sorter-mode
+      (add-hook 'after-save-hook #'dart-import-sorter--sort nil t)
+    (remove-hook 'after-save-hook #'dart-import-sorter--sort t)))
+
+(add-hook 'dart-mode-hook 'dart-import-sorter-mode)
+
+(defun dart-import-sorter--sort ()
   "Run import_sorter on the current file or directory."
   (interactive)
   (let* ((path (or buffer-file-name "."))
@@ -19,18 +37,11 @@
 	       (revert-buffer nil t t))
       (message "Cannot sort imports: neither 'flutter' nor 'pub' is present."))))
 
-(define-minor-mode dart-import-sorter-mode
-  "Toggle Dart Import Sorter mode."
-  nil
-  :group 'dart-import-sorter
-
-  (if dart-import-sorter-mode
-      (add-hook 'after-save-hook #'dart-import-sorter--after-save-handler nil t)
-    (remove-hook 'after-save-hook #'dart-import-sorter--after-save-handler t)))
-
-(add-hook 'dart-mode-hook 'dart-import-sorter-mode)
-
 (defun dart-import-sorter--pub (TASK)
+  "Return a string which can be used to run TASK with pub.
+
+Use `flutter pub' if flutter is available, or `pub' directly if
+it is not."
   (let ((command
 	 (cond ((executable-find "flutter")
 		"flutter pub")
@@ -42,8 +53,6 @@
 	(format "%s %s" command TASK)
       nil)))
 
-(defun dart-import-sorter--after-save-handler ()
-  (when dart-import-sorter-mode
-    (dart-sort-imports)))
-
 (provide 'dart-import-sorter-mode)
+
+;;; dart-import-sorter-mode.el ends here
