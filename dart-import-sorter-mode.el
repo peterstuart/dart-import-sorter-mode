@@ -15,6 +15,7 @@
 ;; a dev dependency in the Dart project.
 
 ;;; Code:
+;; -*- lexical-binding: t -*-
 
 (define-minor-mode dart-import-sorter-mode
   "Toggle Dart Import Sorter mode."
